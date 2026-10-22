@@ -1,0 +1,391 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>쉐이 남매 관계도</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Gowun+Dodum&family=Noto+Serif+KR:wght@500&display=swap">
+<style>
+/* Layout: 12 siblings on a ring in birth order, ink lines between them; detail panel beside on wide screens, below on narrow */
+:root {
+  --bg: #e9eeea;
+  --surface: #f6f8f5;
+  --ink: #1b2420;
+  --muted: #56645d;
+  --line: #c6d0c9;
+  --brother: #2c6a88;
+  --sister: #97456a;
+  --dead: #858d88;
+  --e-tension: #b2412c;
+  --e-care: #2b7656;
+  --e-rival: #a86f12;
+  --e-ally: #3b5ba6;
+  --e-jie: #7b847f;
+  --font-display: "Song Myung", "Noto Serif KR", serif;
+  --font-hanja: "Noto Serif KR", "Song Myung", serif;
+  --font-body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111614; --surface: #19201d; --ink: #e3eae5; --muted: #98a69e; --line: #2c3732;
+    --brother: #82b6d2; --sister: #d995b4; --dead: #7d8681;
+    --e-tension: #e57d64; --e-care: #6cc39b; --e-rival: #e2ac57; --e-ally: #93a9ea; --e-jie: #8b948f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111614; --surface: #19201d; --ink: #e3eae5; --muted: #98a69e; --line: #2c3732;
+  --brother: #82b6d2; --sister: #d995b4; --dead: #7d8681;
+  --e-tension: #e57d64; --e-care: #6cc39b; --e-rival: #e2ac57; --e-ally: #93a9ea; --e-jie: #8b948f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body);
+  font-size: 15px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px;
+}
+.wrap { max-width: 1500px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+header h1 { font-family: var(--font-display); font-weight: 400; font-size: 34px; margin: 0; letter-spacing: 0.02em; text-wrap: balance; }
+header p { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip {
+  font: inherit; font-size: 14px; cursor: pointer; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  padding: 5px 12px 5px 10px; display: inline-flex; align-items: center; gap: 8px;
+}
+.chip[aria-pressed="false"] { opacity: 0.45; }
+.chip:focus-visible, .node:focus-visible, .reset:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.swatch { width: 22px; height: 0; border-top: 3px solid currentColor; display: inline-block; }
+.swatch.dash { border-top-style: dashed; }
+.legend-sex { display: inline-flex; gap: 14px; margin-left: auto; color: var(--muted); font-size: 13px; }
+.legend-sex span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; border: 2px solid var(--c); }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; align-items: start; }
+.map { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow-x: auto; }
+.map svg { display: block; width: 100%; height: auto; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 22px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); max-height: calc(100vh - 32px); overflow-y: auto; min-width: 0; }
+.panel h2 { font-family: var(--font-display); font-weight: 400; font-size: 28px; margin: 0; line-height: 1.2; }
+.panel h2 .hz { font-family: var(--font-hanja); font-size: 20px; color: var(--muted); margin-left: 8px; }
+.meta { color: var(--muted); font-size: 13px; letter-spacing: 0.04em; margin-top: 2px; }
+.blurb { margin: 10px 0 0; }
+.panel h3 { font-size: 13px; letter-spacing: 0.08em; color: var(--muted); font-weight: 400; margin: 20px 0 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.rel { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rel li { display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 10px; }
+.rel .bar { border-radius: 2px; background: var(--c); }
+.rel .bar.dash { background: repeating-linear-gradient(to bottom, var(--c) 0 5px, transparent 5px 9px); }
+.rel .who { font-family: var(--font-display); font-size: 17px; }
+.rel .who button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.rel .tag { font-size: 12px; color: var(--c); margin-left: 6px; }
+.rel .lab { font-size: 15px; }
+.rel .det { font-size: 13.5px; color: var(--muted); }
+.calls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; margin: 0; }
+.calls div { display: flex; gap: 8px; font-size: 14px; min-width: 0; }
+.calls dt { color: var(--muted); flex: 0 0 auto; }
+.calls dd { margin: 0; min-width: 0; }
+.calls .guess { color: var(--muted); }
+.calls .guess::after { content: " *"; }
+.note { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.reset { font: inherit; font-size: 13px; color: var(--muted); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; cursor: pointer; float: right; }
+.axes { display: flex; flex-direction: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.axes b { font-weight: 400; font-family: var(--font-display); font-size: 16px; display: block; }
+.axes span { color: var(--muted); font-size: 13.5px; }
+svg text { font-family: var(--font-body); }
+.edge { fill: none; stroke-width: 2; opacity: 0.55; transition: opacity .2s, stroke-width .2s; }
+.edge.dash { stroke-dasharray: 7 6; }
+.edge.hot { opacity: 1; stroke-width: 3.5; }
+.edge.cold { opacity: 0.07; }
+.edge.off { display: none; }
+.node { cursor: pointer; transition: opacity .2s; }
+.node circle.disc { fill: var(--surface); stroke-width: 3; }
+.node.sel circle.disc { stroke-width: 5; }
+.node.dim { opacity: 0.32; }
+.node .nm { font-family: var(--font-display); font-size: 25px; fill: var(--ink); }
+.node .hz { font-family: var(--font-hanja); font-size: 15px; fill: var(--muted); }
+.node .rk { font-size: 13px; fill: var(--muted); }
+.elab rect { fill: var(--surface); stroke-width: 1.5; }
+.elab text { font-size: 15px; fill: var(--ink); }
+.hint { font-size: 14px; fill: var(--muted); }
+@media (max-width: 1100px) {
+  .main { grid-template-columns: minmax(0, 1fr); }
+  .panel { position: static; max-height: none; }
+}
+@media (max-width: 760px) {
+  .map svg { min-width: 760px; }
+  header h1 { font-size: 28px; }
+  .legend-sex { margin-left: 0; }
+  .calls { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { .edge, .node { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>쉐이 남매 관계도</h1>
+    <p>쉐이(岁)의 열두 대리인을 서열 순으로 둘렀어요. 이름을 누르면 그 사람의 관계선과 호칭만 남아요.</p>
+  </header>
+
+  <div class="controls" id="filters" aria-label="관계 종류 필터"></div>
+
+  <div class="main">
+    <div class="map" id="map"></div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</div>
+
+<script>
+const TYPES = {
+  tension: { label: "대립·긴장", color: "var(--e-tension)" },
+  care:    { label: "돌봄·살림", color: "var(--e-care)" },
+  rival:   { label: "앙숙·티격태격", color: "var(--e-rival)" },
+  ally:    { label: "협력·공모", color: "var(--e-ally)" },
+  jie:     { label: "지에를 둘러싼 끈", color: "var(--e-jie)", dash: true }
+};
+
+const N = [
+  { id: "cy", nm: "총웨", hz: "重岳 · 朔", rank: 1, sex: "m", pw: "무예", blurb: "인간의 몸을 스스로 빚은 맏이. 쉐이 조각은 검에 봉인해 권능을 못 쓴다. 너그럽지만 위엄이 없어 슈의 잔소리를 못 피한다." },
+  { id: "wg", nm: "왕", hz: "望", rank: 2, sex: "m", pw: "병법·바둑", blurb: "과묵한 모사. 바둑은 지에에게 배웠다. 지에가 그를 대신해 소멸한 뒤로 모든 수가 그녀를 향한다." },
+  { id: "lg", nm: "링", hz: "令", rank: 3, sex: "f", pw: "꿈·시", blurb: "술 좋아하는 시인. 큰형 대신 옥문과 북방 전선을 지켰고, 큰형과 둘째 사이의 전령 노릇을 한다." },
+  { id: "jn", nm: "쥔", hz: "均", rank: 4, sex: "f", pw: "율법·음악", blurb: "말로 법을 정하는 전직 법관이자 거문고 연주자. 지에를 잃은 뒤 노래를 봉인했다." },
+  { id: "je", nm: "지에", hz: "颉", rank: 5, sex: "f", pw: "글", dead: true, blurb: "남매 모두의 한 글자 이름을 지어준 셋째 언니. 982년 왕 대신 세릉에서 소멸했다. 생기 조각이 인형 '샤오모지'로 남았다." },
+  { id: "su", nm: "슈", hz: "黍", rank: 6, sex: "f", pw: "농업", blurb: "대황성을 지키다 한 번 사라졌다 돌아온 집안의 큰언니. 밥과 건강 관리를 맡는다." },
+  { id: "ji", nm: "지", hz: "绩", rank: 7, sex: "m", pw: "방직·장사", blurb: "모든 걸 장부로 계산하는 상인. 위미각 건물주. 가족 앞에선 낯가죽이 얇다." },
+  { id: "yi", nm: "이", hz: "易", rank: 8, sex: "m", pw: "물자·정원", blurb: "계원의 주인이자 수집가. 열흘씩 자며 설계한다. 정원 정상에 지에의 기념관이 있다." },
+  { id: "nn", nm: "니엔", hz: "年", rank: 9, sex: "f", pw: "단조", blurb: "B급 영화 감독. 태평해 보여도 남매의 생사에 가장 민감하고, 외로움을 가장 탄다." },
+  { id: "pg", nm: "팡", hz: "方", rank: 10, sex: "m", pw: "의술", blurb: "가족 모임엔 약저울만 보내고 산 위에서 지켜보는 내향적인 의사. 제자 풍서가 소식을 전한다." },
+  { id: "xi", nm: "시", hz: "夕", rank: 11, sex: "f", pw: "그림", blurb: "그림 속에 사는 은둔 화가. 니엔과 앙숙이고, 슈 언니만은 따른다. 지에가 붙인 별명은 '작은 먹점'." },
+  { id: "yu", nm: "위", hz: "余", rank: 12, sex: "m", pw: "생기·요리", blurb: "백조 위미각의 주방장. 남매 중 가장 사람에 가깝고, 쉐이로 돌아가기를 거부한다." }
+];
+
+const E = [
+  ["cy","wg","tension","수백 년 대립, 서로를 가장 잘 앎","왕이 조정에 손대자 총웨가 바둑판을 깨뜨렸다. 지에가 죽은 뒤 왕의 복수를 막았다. 왕은 마지막에 \"내 적은 네가 아니야\"라고 말한다."],
+  ["cy","lg","care","검을 가르치고 옥문으로 보냄","링은 큰형의 권유로 옥문에 가 백 년 넘게 그를 대신해 국경을 지켰다. 총웨가 꼽는 링의 결점은 술과 외상값."],
+  ["cy","xi","care","그림 속 하루, 가짜 시 간파","시가 그린 가짜 '시'를 바로 알아봤다. \"제 여동생을 못 알아보는 오라비가 어디 있나.\" 아침 권법으로 그림을 깨고 나왔다."],
+  ["cy","nn","care","영화 무술감독을 맡아줌","니엔이 덜 시끄럽고 덜 외롭도록. 총웨는 니엔을 '가장 외로움을 타는 아이'로 본다."],
+  ["cy","yu","care","올 때마다 낯선 음식을","변방 고기에 질린 큰형에게 위가 처음 피자와 시라쿠사식 만두를 만들어 줬다."],
+  ["cy","pg","care","병을 고칠 수 있는 아우","옥문 시절 총웨는 병자에게 \"고칠 수 있을지 모르는 아우가 있다\"고 했다. 왕에게 늘 팡의 안부를 묻는다."],
+  ["lg","wg","ally","꾸짖으며 함께 꾼 꿈","편지 한 통 없다고 공개 질책. \"여동생 앞에서 떼쓰다니.\" 그러면서도 링의 꿈으로 쉐이의 꿈에 들어가는 계획을 함께했다. 왕은 그 꿈을 '가장 무거운 멍에'라 부른다."],
+  ["lg","nn","care","성급한 동생","\"니엔은 성급하고 시는 겁이 많지만, 둘 다 하고 싶은 걸 찾았어.\" 링이 오면 둘이 시험 앞둔 학생처럼 얌전해진다."],
+  ["lg","xi","care","겁 많은 동생","시가 그림 속 창조물로 아이들과 노는 걸 보고 굳이 깨우지 않는다. 시는 링을 '가장 종잡을 수 없는 언니'라 한다."],
+  ["lg","jn","ally","술과 음악으로 쉐이를 재움","결전 때 링의 꿈과 쥔의 거문고로 세릉 밖에서 쉐이를 잠재웠다. 링은 노래를 청하지만 쥔은 서약을 지킨다."],
+  ["jn","je","jie","노래 봉인 서약과 서도","지에가 떠나기 전 쥔에게 서도(書刀)를 맡겼다. 쥔은 지에가 돌아오지 않았다며 노래하지 않고, 서도는 천에게 넘겼다."],
+  ["jn","wg","tension","집념을 심판하는 율","\"둘째 오라버니의 집념이 이토록 치우치고 절절할 줄은.\" 지에의 생기를 세릉으로 보내 주되 \"책임은 반드시 묻는다.\""],
+  ["jn","yu","care","식후 거문고 공연","메뉴판대로 정식을 시키고, 식사 뒤 연주를 시작해 노래 듣는 손님이 밥 먹는 손님보다 많아진다."],
+  ["jn","xi","care","잠든 시를 끌고 옴","천경각 앞에서 자던 시를 주워 가족 식사에 데려왔는데, 사실은 먹물 분신이었다."],
+  ["wg","je","jie","바둑 사제, 대신 죽은 여동생","지에가 왕에게 바둑을 가르치고 이름을 지어줬다. 둘이 함께 쉐이를 재우려다 지에가 대신 소멸했다. \"그녀를 얼마나 더 기억할 수 있을지.\""],
+  ["wg","su","tension","가장 안 맞는데 자주 찾아감","밤새 이야기하고 언쟁하며 헤어진다. 슈가 손금을 봐주고(孤宿無兩, 九死一生) 씨앗 한 줌을 쥐여 줬다. \"목숨과 목숨을 바꾸라고 준 게 아니야.\""],
+  ["wg","ji","ally","공모자, \"장부는 끝났다\"","지는 왕의 계획에 목숨을 걸고 비단 옷을 짜 입혔다. 세릉 앞에서 왕은 \"장부는 끝났다, 떠나라\"며 지를 돌려보냈다."],
+  ["wg","yu","care","백 년 끓인 국","\"너만은 끌어들이고 싶지 않았다.\" 위는 백 년 끓인 국으로 \"죽을 각오로 가지 마\"라고 붙잡았다."],
+  ["wg","yi","ally","빈 두루마리로 지에 복원","왕이 남긴 빈 두루마리와 먹으로 이가 지에의 복원을 맡았다. 이는 계원 피해를 왕에게 청구했다. 로도스 방의 화분도 이가 옮겨 심었다."],
+  ["wg","nn","rival","\"바둑 실패작\"","니엔은 왕의 그림자를 보고 이미 미쳤다고 했다. 세릉은 오백 년 전부터 부수고 싶었다고. 그래도 \"도와달라 했으면 더 빨리 왔을 거야.\""],
+  ["wg","xi","rival","\"구린 바둑 대가리\", 그림 덫","시가 깔아둔 그림에 왕이 걸려들어 로도스에서 재회했다. 시는 먹 덩어리만 봐도 왕의 분신인지 의심한다."],
+  ["su","ji","tension","대황성 사건, 1년 휴업 판결","어릴 적 슈 옆에서 누에 치던 아이. 슈를 '해방'하려 대황성의 데몬을 깨웠다. 슈는 결말에 일 년 장사 휴업과 빚 청산을 명했다."],
+  ["su","nn","care","매운 것 제한, 거수의 심장","건강 식단을 짜고 훠궈를 줄이게 한다. 대황성에서 니엔과 함께 만든 거수의 심장에 슈의 의식이 담겼다가 돌아왔다."],
+  ["su","xi","care","그림 속 은둔 금지","운동과 로도스 일을 시킨다. 시는 슈가 사라졌을 때 \"진짜로 사라지는 걸 봤다\"고 증언하고, 슈만은 따른다."],
+  ["su","yu","care","쌀 들고 와 주방 점령","올 때마다 대황성 쌀을 가져와 오히려 막내에게 밥을 차려준다. 서로 요리 실력을 인정한다."],
+  ["su","pg","care","약초를 함께 심음","슈가 팡을 천경각에 데려가 지에의 인형을 위해 난초와 약초를 함께 심었다. 풍서 편으로 선물을 보낸다."],
+  ["ji","yu","care","위미각 건물주, 월세=밥값","느긋하게 앉아 품평하는 날이면 그달 월세를 밥값으로 퉁친다. 결말엔 내후년까지 면제."],
+  ["ji","yi","ally","전당포 보물과 빚","이가 지의 전당포에서 골동품을 적잖이 가져갔다. \"내게 진 빚을 마음에 둔 적이 있나.\" 결말엔 둘이 계원에서 쉰다."],
+  ["ji","xi","rival","\"자수쟁이\", 죽이겠다","슈가 사라진 일로 시는 지를 죽이겠다고 했다. 지는 시의 그림 한 폭을 미리 받아 갔다."],
+  ["ji","nn","ally","그림 위조 공범 → 대황성의 적","과거 시의 그림 위조품을 둘이 팔았다. 대황성에선 적이었고, 니엔은 지를 엄하게 벌하자고 했다."],
+  ["yi","nn","ally","공학 파트너, 량의 몸","니엔이 준 재료로 이가 조수 량의 몸을 만들었다. 니엔은 '썩을 여덟째', '느림보'라 부르면서도 \"이게 내가 아는 이지.\""],
+  ["yi","je","jie","계원 정상의 기념관","지에의 몸은 계원 정상에 글자 없는 기념관으로 남았고, 남매가 잊을수록 초상이 흐려진다. 뒤뜰 이름은 '지에원'."],
+  ["yi","xi","ally","그림 소장, 정원 속 화경","이는 시의 그림을 소장하고, 시는 계원 안의 그림 세계에 머문다."],
+  ["yi","pg","care","조는 팡의 숨을 확인","팡이 졸고 있으면 이가 숨을 쉬는지 확인한다."],
+  ["nn","xi","rival","고추기름 vs 먹물","시의 컵엔 고추기름, 니엔의 밥그릇엔 먹물. 폭죽으로 그림에서 끌어내 로도스로 데려갔다. 시: \"니엔은 우리 생사를 엄청 신경 써.\""],
+  ["nn","yu","rival","가짜 입사 계약서","\"요리 좀 하는 내 동생\"을 자랑하더니 가짜 계약서로 로도스 후방지원 오퍼레이터로 입사시켰다. \"니엔 누나! 또 속였어?!\""],
+  ["nn","pg","care","도시락 다 먹어야 출국","\"오면 마지막일까 봐 못 오고, 그래도 보고 싶고.\" 도시락을 싸 주며 다 먹기 전엔 염국을 못 떠난다고 했다."],
+  ["xi","yu","rival","\"언니라고 불러\"","제일 까다로운 손님. 요리가 늦으면 \"쉐이가 먼저 부활하겠다\"고 짜증. 위는 일부러 호칭을 생략한다."],
+  ["yu","je","jie","글을 가르쳐준 누나","식사 자리에서 유일하게 위를 칭찬해 준 누나. 위는 지금도 그녀를 떠올리면 운다. 마지막 저녁을 왕, 위와 함께 먹었다."],
+  ["xi","je","jie","'작은 먹점'","지에의 장난으로 붙은 별명. 시는 그녀에게 서예를 배워둘 걸 아쉬워한다. 서재의 열두 폭 그림 중 하나가 지에의 것."]
+];
+
+const G = "?";
+const CALLS = {
+  cy: { wg:"둘째", lg:"령매·샤오링 (링은 싫어함)", jn:"둘째 여동생", su:"슈", ji:"지", yi:"이", nn:"샤오니엔", pg:"팡 아우", xi:"시 동생", yu:"위" },
+  wg: { cy:"큰형 / 화나면 '형님'", lg:"링", jn:"쥔", su:"슈", ji:"지", yi:"이", nn:"니엔", pg:"팡", xi:"시", yu:"막내·위 아우" },
+  lg: { cy:"큰오라버니", wg:"둘째 오라버니·바둑꾼", jn:"둘째 동생", su:"슈", ji:"지", yi:"이", nn:"샤오니엔", pg:"다섯째 아우", xi:"샤오시", yu:"위" },
+  jn: { cy:G+"큰오라버니", wg:"둘째 오라버니", lg:G+"링 언니", su:"슈", ji:"지", yi:"이", nn:"니엔", pg:"팡", xi:"시", yu:"위" },
+  su: { cy:"큰오빠", wg:"둘째 오빠", lg:"링 언니", jn:G+"쥔 언니", ji:"지", yi:"이", nn:"샤오니엔", pg:"팡", xi:"시·작은 먹점", yu:"샤오위·막내" },
+  ji: { cy:"큰형 (뒤에선 영감)", wg:"둘째 형", lg:"링 누나", jn:G+"쥔 누나", su:"누나", yi:"이", nn:"니엔", pg:"팡", xi:"샤오시", yu:"막내" },
+  yi: { cy:"큰형", wg:"둘째 형", lg:G+"링 누나", jn:G+"쥔 누나", su:G+"슈 누나", ji:"셋째 형", nn:"니엔", pg:"팡", xi:"시", yu:G+"막내" },
+  nn: { cy:"큰오빠", wg:"바둑꾼·둘째", lg:"링 언니·큰언니", jn:"둘째 언니", su:"슈 언니·여섯째", ji:"셋째 형(비꼼)·일곱째", yi:"여덟째·느림보", pg:"열째", xi:"시·우리 착한 동생", yu:"꼬맹이·막내" },
+  pg: { cy:"우리 형", wg:G+"둘째 형", lg:G+"누나", jn:G+"누나", su:G+"누나", ji:G+"형", yi:G+"형", nn:G+"누나", xi:G+"시", yu:G+"위" },
+  xi: { cy:"큰오빠", wg:"바둑꾼", lg:"큰언니", jn:G+"쥔 언니", su:"슈 언니", ji:"자수쟁이", yi:"이", nn:"니엔 ('언니'는 비꼴 때만)", pg:"팡", yu:"위 (\"언니라고 불러\")" },
+  yu: { cy:"큰형", wg:"둘째 형", lg:"링 누나·큰누나", jn:"쥔 누나·둘째 누나", su:"슈 누나·넷째 누나", ji:"셋째 형", yi:"넷째 형", nn:"니엔 누나", pg:G+"팡 형", xi:"시 (호칭 생략)" }
+};
+
+const AXES = [
+  ["지에를 둘러싼 셋", "왕은 복수와 부활에, 쥔은 서약과 서도에, 이는 계원의 기념관에 묶여 있다."],
+  ["큰형과 둘째", "수백 년의 대립. 왕이 '형님'이라 부르면 화난 것이다. 링이 둘 사이를 오간다."],
+  ["집안 살림", "슈가 밥을, 위가 요리를, 지가 건물을 맡는다. 가족 식사는 늘 위미각에서."],
+  ["앙숙", "니엔과 시(불과 먹), 시와 지(자수쟁이), 니엔과 왕(세릉)."],
+  ["밖에서 지켜보는 이", "팡은 약저울만 보내고, 링은 어디에나 있고 어디에도 없다. 열두 명이 다 모인 적은 없다."]
+];
+
+const byId = Object.fromEntries(N.map(n => [n.id, n]));
+const active = new Set(Object.keys(TYPES));
+let selected = null;
+
+const W = 1000, C = 500, R = 392, NR = 54;
+N.forEach((n, i) => {
+  const a = -Math.PI / 2 + i * (2 * Math.PI / N.length);
+  n.x = C + R * Math.cos(a); n.y = C + R * Math.sin(a);
+});
+
+const svgNS = "http://www.w3.org/2000/svg";
+const mk = (tag, attrs = {}, parent) => {
+  const el = document.createElementNS(svgNS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(el);
+  return el;
+};
+
+const svg = mk("svg", { viewBox: `0 0 ${W} ${W}`, role: "img", "aria-label": "쉐이 열두 남매를 서열 순으로 원형 배치하고 관계를 선으로 이은 도표" });
+document.getElementById("map").appendChild(svg);
+const gEdges = mk("g", {}, svg);
+const gLabels = mk("g", {}, svg);
+const gNodes = mk("g", {}, svg);
+const hint = mk("text", { x: C, y: C, "text-anchor": "middle", "dominant-baseline": "central", class: "hint" }, svg);
+hint.textContent = "이름을 눌러 보세요";
+
+E.forEach((e, k) => {
+  const [a, b, t] = e;
+  const A = byId[a], B = byId[b];
+  const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
+  const cx = mx + (C - mx) * 0.32, cy = my + (C - my) * 0.32;
+  const p = mk("path", {
+    d: `M${A.x},${A.y} Q${cx},${cy} ${B.x},${B.y}`,
+    class: "edge" + (TYPES[t].dash ? " dash" : ""),
+    stroke: TYPES[t].color
+  }, gEdges);
+  e.el = p;
+  e.lx = 0.25 * A.x + 0.5 * cx + 0.25 * B.x;
+  e.ly = 0.25 * A.y + 0.5 * cy + 0.25 * B.y;
+});
+
+N.forEach(n => {
+  const g = mk("g", { class: "node", tabindex: "0", role: "button", "aria-label": `${n.nm}, ${n.rank}째, ${n.pw}` }, gNodes);
+  const stroke = n.dead ? "var(--dead)" : (n.sex === "m" ? "var(--brother)" : "var(--sister)");
+  const c = mk("circle", { cx: n.x, cy: n.y, r: NR, class: "disc", stroke }, g);
+  if (n.dead) c.setAttribute("stroke-dasharray", "8 6");
+  const hz = mk("text", { x: n.x, y: n.y - 22, "text-anchor": "middle", "dominant-baseline": "central", class: "hz" }, g);
+  hz.textContent = n.hz.split(" · ")[0];
+  const nm = mk("text", { x: n.x, y: n.y + 2, "text-anchor": "middle", "dominant-baseline": "central", class: "nm" }, g);
+  nm.textContent = n.nm + (n.dead ? "†" : "");
+  const rk = mk("text", { x: n.x, y: n.y + 28, "text-anchor": "middle", "dominant-baseline": "central", class: "rk" }, g);
+  rk.textContent = `${n.rank} · ${n.pw}`;
+  g.addEventListener("click", () => select(selected === n.id ? null : n.id));
+  g.addEventListener("keydown", ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); select(selected === n.id ? null : n.id); } });
+  n.el = g;
+});
+
+const filters = document.getElementById("filters");
+Object.entries(TYPES).forEach(([k, t]) => {
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.id = "f-" + k;
+  b.setAttribute("aria-pressed", "true");
+  b.style.color = t.color;
+  b.innerHTML = `<span class="swatch${t.dash ? " dash" : ""}"></span><span style="color:var(--ink)">${t.label}</span>`;
+  b.addEventListener("click", () => {
+    if (active.has(k)) active.delete(k); else active.add(k);
+    b.setAttribute("aria-pressed", active.has(k) ? "true" : "false");
+    render();
+  });
+  filters.appendChild(b);
+});
+const sexLegend = document.createElement("div");
+sexLegend.className = "legend-sex";
+sexLegend.innerHTML = `<span style="--c:var(--brother)">형제</span><span style="--c:var(--sister)">자매</span><span style="--c:var(--dead)">고인</span>`;
+filters.appendChild(sexLegend);
+
+function select(id) { selected = id; render(); }
+
+function render() {
+  gLabels.innerHTML = "";
+  hint.style.display = selected ? "none" : "";
+  const nbrs = new Set();
+  E.forEach(e => {
+    const on = active.has(e[2]);
+    const inc = selected && (e[0] === selected || e[1] === selected);
+    e.el.classList.toggle("off", !on);
+    e.el.classList.toggle("hot", !!(on && inc));
+    e.el.classList.toggle("cold", !!(on && selected && !inc));
+    if (on && inc) {
+      nbrs.add(e[0] === selected ? e[1] : e[0]);
+      const g = mk("g", { class: "elab" }, gLabels);
+      const r = mk("rect", { rx: 6, stroke: TYPES[e[2]].color }, g);
+      const tx = mk("text", { x: e.lx, y: e.ly, "text-anchor": "middle", "dominant-baseline": "central" }, g);
+      tx.textContent = e[3];
+      const bb = tx.getBBox();
+      r.setAttribute("x", bb.x - 8); r.setAttribute("y", bb.y - 4);
+      r.setAttribute("width", bb.width + 16); r.setAttribute("height", bb.height + 8);
+    }
+  });
+  N.forEach(n => {
+    n.el.classList.toggle("sel", n.id === selected);
+    n.el.classList.toggle("dim", !!(selected && n.id !== selected && !nbrs.has(n.id)));
+    n.el.setAttribute("aria-pressed", n.id === selected ? "true" : "false");
+  });
+  renderPanel();
+}
+
+function relItem(e, other) {
+  const t = TYPES[e[2]];
+  const o = byId[other];
+  return `<li style="--c:${t.color}"><span class="bar${t.dash ? " dash" : ""}"></span><div>
+    <div class="who"><button type="button" data-go="${o.id}">${o.nm}</button><span class="tag">${t.label}</span></div>
+    <div class="lab">${e[3]}</div><div class="det">${e[4]}</div></div></li>`;
+}
+
+function renderPanel() {
+  const panel = document.getElementById("panel");
+  if (!selected) {
+    const groups = Object.keys(TYPES).filter(k => active.has(k)).map(k => {
+      const items = E.filter(e => e[2] === k).map(e => {
+        const t = TYPES[k];
+        return `<li style="--c:${t.color}"><span class="bar${t.dash ? " dash" : ""}"></span><div>
+          <div class="who"><button type="button" data-go="${e[0]}">${byId[e[0]].nm}</button> · <button type="button" data-go="${e[1]}">${byId[e[1]].nm}</button></div>
+          <div class="lab">${e[3]}</div></div></li>`;
+      }).join("");
+      return `<h3>${TYPES[k].label}</h3><ul class="rel">${items}</ul>`;
+    }).join("");
+    panel.innerHTML = `<h2>열두 대리인</h2>
+      <div class="meta">朔望令均 · 颉黍绩易 · 年方夕余</div>
+      <p class="blurb">지에가 지어준 열두 이름을 이으면 한 해의 축원이 된다. 서열은 혼돈 속에서 "나는 누구인가"에 먼저 답한 순서다.</p>
+      <h3>관계의 축</h3>
+      <ul class="axes">${AXES.map(a => `<li><b>${a[0]}</b><span>${a[1]}</span></li>`).join("")}</ul>
+      ${groups}`;
+  } else {
+    const n = byId[selected];
+    const rels = E.filter(e => active.has(e[2]) && (e[0] === n.id || e[1] === n.id))
+      .map(e => relItem(e, e[0] === n.id ? e[1] : e[0])).join("");
+    let calls = "";
+    if (CALLS[n.id]) {
+      const rows = N.filter(m => m.id !== n.id && !m.dead).map(m => {
+        let v = CALLS[n.id][m.id] || "";
+        const guess = v.startsWith(G);
+        if (guess) v = v.slice(1);
+        return `<div><dt>${m.nm}</dt><dd class="${guess ? "guess" : ""}">${v}</dd></div>`;
+      }).join("");
+      calls = `<h3>${n.nm}${batchim(n.nm) ? "이" : "가"} 부르는 말</h3><dl class="calls">${rows}</dl><p class="note">* 원작에 직접 나오지 않은 추정 호칭</p>`;
+    }
+    panel.innerHTML = `<button type="button" class="reset" data-go="">전체 보기</button>
+      <h2>${n.nm}${n.dead ? "†" : ""}<span class="hz">${n.hz}</span></h2>
+      <div class="meta">${n.rank}째 · ${n.sex === "m" ? "형제" : "자매"} · ${n.pw}</div>
+      <p class="blurb">${n.blurb}</p>
+      <h3>관계</h3><ul class="rel">${rels || '<li><div class="det">켜져 있는 관계 종류가 없어요.</div></li>'}</ul>
+      ${calls}`;
+  }
+  panel.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => select(b.dataset.go || null)));
+}
+
+function batchim(s) {
+  const c = s.charCodeAt(s.length - 1);
+  return c >= 0xac00 && c <= 0xd7a3 && (c - 0xac00) % 28 !== 0;
+}
+
+render();
+</script>
+
+</body></html>
